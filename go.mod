@@ -1,3 +1,3 @@
-module backup-proj-env
+module envbak
 
-go 1.20
+go 1.21
