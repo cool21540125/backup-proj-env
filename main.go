@@ -4,7 +4,6 @@ import (
 	"archive/zip"
 	"errors"
 	"flag"
-	"fmt"
 	"io"
 	"io/fs"
 	"log"
@@ -71,7 +70,6 @@ func archiveBackup(archiveSrcDir, target string) error {
 
 func backupEnvFiles(srcDir, destDir string) error {
 
-	// base := filepath.Base(srcDir)
 	// fmt.Println(base)
 	err := filepath.WalkDir(srcDir, func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
@@ -90,7 +88,7 @@ func backupEnvFiles(srcDir, destDir string) error {
 
 				destEnvFile := destDir + "/" + subDir + "/.env"
 
-				fmt.Println(srcEnvFile + " -> " + destEnvFile)
+				// fmt.Println(srcEnvFile + " -> " + destEnvFile)
 				makeBackup(srcEnvFile, destEnvFile)
 			}
 		}
@@ -144,9 +142,8 @@ func main() {
 	bakDir := flag.String("src", ".", "source directory")
 	outDir := flag.String("out", ".", "output directory")
 	flag.Parse()
-
-	fmt.Println("備份路徑: " + *bakDir)
-	fmt.Println("產出路徑: " + *outDir)
+	// fmt.Println("備份路徑: " + *bakDir)
+	// fmt.Println("產出路徑: " + *outDir)
 
 	srcDir := *bakDir
 	srcDir = processDirPath(srcDir)
@@ -155,14 +152,13 @@ func main() {
 
 	err := backupEnvFiles(srcDir, destDir)
 	if err != nil {
-		fmt.Println("*** Backup failed. ***")
 		log.Fatal(err)
 	}
 
 	dt := time.Now()
 	err = archiveBackup(destDir, destDir+".env."+dt.Format("20060102")+".zip")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 	os.RemoveAll(destDir)
 }
