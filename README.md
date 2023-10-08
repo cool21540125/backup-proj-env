@@ -1,5 +1,5 @@
 # Usage
 
 ```bash
-go run main.go BACKUP_DIR_PATH
+go run main.go -src=ENV_FILE_BACKUP_SOURCE_DIR -out=ENV_FILE_BACKUP_TARGET_DIR
 ```
